@@ -22,3 +22,14 @@ do
 done < /etc/ip-list/isp/telekom-ipv4 | sort | uniq
 iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 ```
+
+## Apache (.htaccess)
+
+To block ip addresses at Apache, you can set a deny rule per ip network in the .htaccess File.
+
+Example .htaccess to block special ip network only
+```
+Deny from 1.2.3.0/24
+Deny from 1.2.4.0/24
+Allow from All
+```
