@@ -23,6 +23,33 @@ done < /etc/ip-list/isp/telekom-ipv4 | sort | uniq
 iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 ```
 
+## Linux (nftables)
+
+Example allow ssh over ```/etc/nftables.conf```
+```
+define allowed_ips = {
+  # include the contents of "allowed_ips.txt"
+  type ipv4_addr; flags interval;
+  include "/etc/ip-list/isp/telekom-ipv4";
+}
+
+table inet filter {
+        chain input {
+                type filter hook input priority 0; policy drop;
+                
+                # Allow already established/related connections
+                ct state established,related accept;
+                
+                # Allow already established/related connections
+                ct state established,related accept;
+                
+                # Allow SSH
+                tcp dport 41234 ip saddr @allowed_ssh_ips accept;
+        }
+        ...
+}
+```
+
 ## Apache (.htaccess)
 
 To block ip addresses at Apache, you can set a deny rule per ip network in the .htaccess File.
