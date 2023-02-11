@@ -27,7 +27,7 @@ iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEP
 
 Example allow ssh over ```/etc/nftables.conf```
 ```
-define allowed_ips = {
+define allowed_ssh_ips = {
   # include the contents of "allowed_ips.txt"
   type ipv4_addr; flags interval;
   include "/etc/ip-list/isp/telekom-ipv4";
